@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Presentation & Design Tools 2025</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-color: #f5f5f7;
+            --card-background: #ffffff;
+            --text-color: #1d1d1f;
+            --secondary-text-color: #6e6e73;
+            --accent-color: #007aff;
+            --accent-hover-color: #0056b3;
+            --border-color: #d2d2d7;
+            --secondary-button-bg: #e8e8ea;
+            --secondary-button-text: #1d1d1f;
+            --secondary-button-hover-bg: #dcdce0;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--secondary-text-color);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-top: 4rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-content {
+            padding: 2.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: var(--secondary-text-color);
+            line-height: 1.7;
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-footer {
+            padding: 0 2.5rem 2.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        
+        .button, .details-button {
+            display: inline-block;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+
+        .button { background-color: var(--accent-color); color: #fff; }
+        .button:hover { background-color: var(--accent-hover-color); }
+        .details-button { background-color: var(--secondary-button-bg); color: var(--secondary-button-text); }
+        .details-button:hover { background-color: var(--secondary-button-hover-bg); }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: var(--card-background);
+            border-radius: 18px;
+            padding: 2rem;
+            max-width: 640px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-content h3 { font-size: 1.75rem; margin-top: 0; margin-bottom: 1rem; }
+        .modal-content p { font-size: 1rem; line-height: 1.8; color: var(--secondary-text-color); white-space: pre-wrap; margin-bottom: 1.5rem;}
+        .close-button { position: absolute; top: 15px; right: 20px; font-size: 2rem; font-weight: 300; color: var(--secondary-text-color); cursor: pointer; line-height: 1; }
+        .close-button:hover { color: var(--text-color); }
+
+        .video-placeholder {
+            position: relative;
+            display: none;
+            cursor: pointer;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            background-color: #000;
+        }
+        .video-placeholder img {
+            display: block;
+            width: 100%;
+            border: 0;
+            aspect-ratio: 16 / 9;
+            transition: opacity 0.3s ease;
+        }
+        .video-placeholder:hover img {
+            opacity: 0.8;
+        }
+        .video-placeholder .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 56px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 14px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+        .video-placeholder .play-button::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 14px 0 14px 24px;
+            border-color: transparent transparent transparent #ffffff;
+            margin-left: 5px;
+        }
+        .video-placeholder:hover .play-button {
+            background-color: rgba(255, 0, 0, 0.85);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        
+        footer { text-align: center; padding: 2rem; margin-top: 4rem; font-size: 0.9rem; color: var(--secondary-text-color); }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            .container { padding: 2rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>AI Presentation & Design Tools</h1>
+            <p class="subtitle">2025年最新版 | テキストからプレゼン資料、動画、インフォグラフィックを自動生成する、低コストで使えるAIツールを厳選。</p>
+        </header>
+
+        <main>
+            <section id="slides">
+                <h2>自動スライド・プレゼン資料作成ツール</h2>
+                <div class="tool-grid">
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>イルシル (Irusiru)</h3>
+                            <p>日本語に完全特化。テキスト入力だけでスライドを自動生成。3,000種以上の豊富なテンプレート。</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://irusiru.jp/" class="button" target="_blank" rel="noopener">公式サイトへ</a>
+                            <button class="details-button" data-youtube="4r5qjU2oOQ4" data-title="イルシル (Irusiru)" data-link="https://irusiru.jp/" data-details="日本のビジネスシーンに最適化されたスライド自動生成ツール。箇条書きのテキストを入力するだけで、内容に合ったデザインやレイアウトをAIが提案してくれます。
+
+特徴:
+• 圧倒的な日本語精度
+• PowerPoint(.pptx)形式でダウンロード・編集可能
+• 3,000種類以上の豊富なデザインテンプレート
+• 企画書やセミナー資料など、大量の資料作成時間を大幅に短縮したい方におすすめ。">詳細を見る</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Gamma</h3>
+                            <p>テキストから洗練されたデザインのスライドやウェブページを数秒で生成。デザイン性が高く評価されている爆速生成ツール。</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://gamma.app/" class="button" target="_blank" rel="noopener">公式サイトへ</a>
+                            <button class="details-button" data-youtube="vN7vY9l9p4A" data-title="Gamma" data-link="https://gamma.app/" data-details="「アイデアを伝える、新しい媒体」を掲げるAIネイティブなツール。スライドだけでなく、ウェブページやドキュメントも生成可能です。
+
+特徴:
+• 生成速度が圧倒的に速い（数秒〜1分程度）
+• 洗練されたモダンなデザイン
+• 埋め込み可能なインタラクティブな要素（動画、グラフ等）
+• とにかく速く、見た目の良い資料を作りたいクリエイターやスタートアップに最適。">詳細を見る</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Canva</h3>
+                            <p>豊富なテンプレートと素材が魅力。AIによるスライド生成機能「Magic Design」を搭載。プレゼン以外にも幅広く使える万能デザインツール。</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://www.canva.com/" class="button" target="_blank" rel="noopener">公式サイトへ</a>
+                            <button class="details-button" data-youtube="I6HUm6mQp2M" data-title="Canva" data-link="https://www.canva.com/" data-details="デザインの民主化を実現した、非デザイナーの強い味方。プレゼン資料はもちろん、SNS投稿、動画、印刷物まであらゆるデザインを作成できます。
+
+特徴:
+• 膨大な数のテンプレートと素材（写真、イラスト、フォント）
+• AI機能「Magic Studio」でテキスト生成や画像編集も可能
+• チームでの共同編集がスムーズ
+• デザインの自由度を重視し、一つのツールで様々な用途に使いたい方に。">詳細を見る</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>パワポ生成AI (UserLocal)</h3>
+                            <p>完全無料で使える国産ツール。キーワード入力からPowerPoint形式のスライドを自動生成。シンプルな操作性が特徴。</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://ai-tool.userlocal.jp/powerpoint_maker" class="button" target="_blank" rel="noopener">公式サイトへ</a>
+                            <button class="details-button" data-youtube="r_pPqLgC3hU" data-title="パワポ生成AI (UserLocal)" data-link="https://ai-tool.userlocal.jp/powerpoint_maker" data-details="データ分析ツールなどを提供するUserLocal社が開発した、完全無料のプレゼン資料生成AI。
+
+特徴:
+• 会員登録不要、完全無料で利用可能
+• キーワードやテーマを入力するだけで骨子とデザインを自動生成
+• PowerPoint形式で出力できる
+• とにかくコストをかけずに、資料作成の初動を早めたい時に非常に便利。">詳細を見る</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="videos">
+                <h2>プレゼン動画作成ツール</h2>
+                <div class="tool-grid">
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Renderforest</h3>
+                            <p>プロ品質のテンプレートが豊富。インフォグラフィック動画やアニメーションプレゼンをクラウド上で簡単に作成できる。</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://www.renderforest.com/jp/" class="button" target="_blank" rel="noopener">公式サイトへ</a>
+                            <button class="details-button" data-youtube="uV3-o8v1gXo" data-title="Renderforest" data-link="https://www.renderforest.com/jp/" data-details="動画作成、ロゴ、モックアップ、ウェブサイトまで作成できる統合ブランディングプラットフォーム。特に動画作成機能が強力です。
+
+特徴:
+• プロがデザインした数千種類の動画テンプレート
+• ホワイトボードアニメーション、インフォグラフィック、3Dアニメなど多彩なスタイル
+• ブラウザ上で完結するため、高性能なPCは不要
+• 専門知識がなくても、マーケティング動画や解説動画を短時間で作りたい場合に最適。">詳細を見る</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Filmora</h3>
+                            <p>AIを搭載した高機能な動画編集ソフト。プレゼン動画に特化した機能や、テキストから動画を生成する機能が強力。</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://filmora.wondershare.jp/" class="button" target="_blank" rel="noopener">公式サイトへ</a>
+                            <button class="details-button" data-youtube="Kj-qK-cEMzU" data-title="Filmora" data-link="https://filmora.wondershare.jp/" data-details="直感的な操作性と高度な機能を両立させた動画編集ソフト。初心者から上級者まで幅広く対応します。
+
+特徴:
+• AIによるテキストベース編集や無音シーンのカット機能
+• 豊富なエフェクト、トランジション、BGM素材
+• テンプレートに頼らず、よりオリジナリティの高い動画を制作したい方向け
+• PCにインストールして使用するソフトウェア。">詳細を見る</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="infographics-code">
+                <h2>インフォグラフィック & コード生成AI</h2>
+                <div class="tool-grid">
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>ChatGPT (GPT-4o)</h3>
+                            <p>プロンプト（指示文）でHTMLやSVGコードを直接生成。シンプルなアイコン、グラフ、ウェブページの構造などを即座に作成できる。</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://chat.openai.com/" class="button" target="_blank" rel="noopener">公式サイトへ</a>
+                            <button class="details-button" data-youtube="sCAx9q8T3Lg" data-title="ChatGPT (コード生成)" data-link="https://chat.openai.com/" data-details="言わずと知れた対話型AI。その能力は文章生成に留まらず、プログラミングコードの生成にも非常に優れています。
+
+活用法:
+• 「円グラフをSVGコードで作って」→プレゼン用のグラフを生成
+• 「シンプルなLPをHTMLで」→ウェブサイトの雛形を作成
+• 「このデータの要点を3つのアイコンで表現して」→アイデア出し
+• 既存のツールと組み合わせることで、クリエイティブの可能性が無限に広がります。">詳細を見る</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>FELO AI</h3>
+                            <p>複数AIモデルを統合した検索エンジン。情報収集からPPT資料の自動生成までを一気通貫で行える。</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://felo.ai/ja" class="button" target="_blank" rel="noopener">公式サイトへ</a>
+                            <button class="details-button" data-youtube="_rSHbK_r3jM" data-title="FELO AI" data-link="https://felo.ai/ja" data-details="リサーチからアウトプットまでをシームレスに繋ぐAIツール。Web検索結果を元に、要約、マインドマップ、プレゼン資料を生成します。
+
+特徴:
+• 煩雑な情報収集・整理の時間を大幅にカット
+• マインドマップをSVG形式でエクスポート可能
+• 複数のLLM（AIモデル）を切り替えて利用できる
+• リサーチベースのプレゼンやレポートを作成する際に絶大な効果を発揮します。">詳細を見る</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-content">
+                            <h3>Adobe Express</h3>
+                            <p>高品質なテンプレートが豊富。インフォグラフィックやチャートを簡単に作成でき、プレゼンや動画への組み込みもスムーズ。</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="https://www.adobe.com/jp/express/" class="button" target="_blank" rel="noopener">公式サイトへ</a>
+                            <button class="details-button" data-youtube="9gC6hOM9x8Y" data-title="Adobe Express" data-link="https://www.adobe.com/jp/express/" data-details="クリエイティブツールの巨人Adobeが提供する、誰でも簡単に使えるデザインツール。プロ品質の素材と洗練されたUIが魅力です。
+
+特徴:
+• Adobe FontsやAdobe Stockの豊富なアセットを利用可能
+• ブランドキット機能で、色やロゴを統一したデザインを簡単に作成
+• 生成AI「Firefly」を搭載し、テキストからの画像生成なども可能
+• ブランドイメージを重視し、高品質なビジュアルを作りたい方に最適。">詳細を見る</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>AIツール情報まとめ © 2025</p>
+        </footer>
+    </div>
+
+    <div id="modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-button">×</span>
+            
+            <div id="modal-video-placeholder" class="video-placeholder">
+                <a id="modal-video-link" href="#" target="_blank" rel="noopener noreferrer">
+                    <img id="modal-video-thumbnail" src="" alt="Video Thumbnail">
+                    <div class="play-button"></div>
+                </a>
+            </div>
+
+            <h3 id="modal-title"></h3>
+            <p id="modal-details"></p>
+            <a id="modal-link" href="#" class="button" target="_blank" rel="noopener">公式サイトで確認</a>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDetails = document.getElementById('modal-details');
+        const modalLink = document.getElementById('modal-link');
+        const closeButton = document.querySelector('.close-button');
+
+        const modalVideoPlaceholder = document.getElementById('modal-video-placeholder');
+        const modalVideoLink = document.getElementById('modal-video-link');
+        const modalVideoThumbnail = document.getElementById('modal-video-thumbnail');
+
+        document.querySelectorAll('.details-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const title = button.dataset.title;
+                const details = button.dataset.details;
+                const link = button.dataset.link;
+                const youtubeId = button.dataset.youtube;
+
+                modalTitle.textContent = title;
+                modalDetails.textContent = details;
+                modalLink.href = link;
+                
+                if (youtubeId) {
+                    const videoUrl = `https://www.google.com/search?q=http.googleusercontent.com/youtube.com/209gC6hOM9x8Y`;
+                    const thumbnailUrl = `http://googleusercontent.com/vi/${youtubeId}/hqdefault.jpg`;
+
+                    modalVideoLink.href = videoUrl;
+                    modalVideoThumbnail.src = thumbnailUrl;
+                    modalVideoThumbnail.alt = `「${title}」の動画サムネイル`;
+                    
+                    modalVideoPlaceholder.style.display = 'block';
+                } else {
+                    modalVideoPlaceholder.style.display = 'none';
+                }
+                
+                modal.style.display = 'flex';
+            });
+        });
+
+        const closeModal = () => {
+            modal.style.display = 'none';
+        };
+
+        closeButton.addEventListener('click', closeModal);
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
